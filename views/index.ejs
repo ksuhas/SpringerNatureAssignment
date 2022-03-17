@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sign Form</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="stylesheet/app.css">
+</head>
+
+<body style="margin-top: 2rem;">
+  <div class="ui main text center aligned container segment">
+    <div class="ui huge header ">Sign Up</div>
+    <form action="/api/v1/signup" method="POST" class="ui form">
+      <div class="field">
+        <div class="two fields">
+          <div class="field">
+            <input type="text" name="firstname" placeholder="First Name">
+          </div>
+          <div class="field">
+            <input type="text" name="lastname" placeholder="Last Name">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <input type="email" name="email" placeholder="E-mail">
+      </div>
+      <div class="field">
+        <input type="password" name="password" placeholder="Password">
+      </div>
+      <div class="field">
+        <input type="number" name="phonenumber" placeholder="Phone Number">
+      </div>
+      <div class="field">
+        <div class="ui checkbox">
+          <input type="checkbox" name="subscribetonewsletter">
+          <label>Subscribe to our newsletter</label>
+        </div>
+      </div>
+      <button style="width:100%" class="ui blue button" type="submit">SIGN IN</button>
+      <% if(typeof data == 'object' && data){ %>
+          <% debugger; %>
+          <% if(data.success){ %>
+            <div class="ui green message">
+              <div class="header">
+                <%= data.message %>
+              </div>
+              <% if(data.user.subscribetonewsletter == 'on'){ %>
+                <p>Hello <%= data.user.firstname %>
+                  <%= data.user.lastname %>, Thank you for signing up. Your account is now created. You would be receiving our
+                    periodic newsletters to your email : <%= data.user.email %>
+                 </p>
+              <%} else{ %>
+                <p>Hello <%= data.user.firstname %> <%= data.user.lastname %>, Thank you for signing up. Your account is now created.</p>
+              <% } %>
+            </div>
+        <% } else { %>
+            <div class="ui red message">
+              <div class="header">
+                !Error
+              </div>
+              <%= data.message %>
+            </div>
+        <% }  %>
+      <% } %> 
+    </form>
+    <p style="margin-top:5rem">By clicking Sign up you agree to our terms <a href="#">terms of service</a></p>
+  </div>
+</body>
+
+</html>
+
+
+<script>
+  $(document).ready(function () {
+    $('.ui form')
+      .form({
+        on: 'blur',
+        fields: {
+          firstname: {
+            identifier: 'firstname',
+            rules: [
+              {
+                type: 'empty',
+                prompt: 'Please enter a first name'
+              }
+            ]
+          },
+          lastname: {
+            identifier: 'lastname',
+            rules: [
+              {
+                type: 'empty',
+                prompt: 'Please select a last name'
+              }
+            ]
+          },
+          email: {
+            identifier: 'email',
+            rules: [
+              {
+                type: 'empty',
+                prompt: 'Please your email'
+              }
+            ]
+          },
+          password: {
+            identifier: 'password',
+            rules: [
+              {
+                type: 'empty',
+                prompt: 'Please enter a password'
+              },
+              {
+                type: 'minLength[6]',
+                prompt: 'Your password must be at least {ruleValue} characters'
+              }
+            ]
+          },
+          phonenumber: {
+            identifier: 'phonenumber',
+            rules: [
+              {
+                type: 'minLength[10]',
+                prompt: 'Phone Number should not exceeds 10 numbers'
+              },
+              {
+                type: 'maxLength[10]',
+                prompt: 'Phone Number should not less 10 numbers'
+              }
+            ]
+          },
+          subscribetonewsletter: {
+            identifier: 'subscribetonewsletter',
+            rules: [
+              {
+                type: 'checked',
+                prompt: 'You must agree to the terms and conditions'
+              }
+            ]
+          }
+        }
+      });
+  });
+
+</script>

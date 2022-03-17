@@ -32,8 +32,8 @@ const userSchema = mongoose.Schema({
         minlength : [10, 'Phonenumber should have more than 10 numbers'] 
     },
     subscribetonewsletter:{
-        type : Boolean,
-        default : false  
+        type : String,
+        default : "off"  
     },
 });
 
